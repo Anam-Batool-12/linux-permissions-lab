@@ -1,0 +1,35 @@
+Lab: Read vs Execute Permission on Directories
+
+Objective:
+The purpose of this lab is to understand the difference between read (r) and execute (x)
+permissions on directories in Linux and how they affect access to files.
+
+Steps Performed:
+1. Created a directory named "secret_dir".
+2. Created two files inside the directory: file1.txt and file2.txt.
+3. Verified normal access when the directory had default permissions.
+4. Removed execute permission from the directory using chmod 444.
+5. Tested access using ls, cd, and cat commands.
+6. Restored execute permission using chmod 555.
+
+Observations:
+- When execute permission was removed from the directory, I was able to list filenames
+  using the ls command.
+- I was not able to enter the directory using cd.
+- I was not able to read files inside the directory even though the files themselves
+  had read permission.
+
+Explanation:
+In Linux, read permission on a directory allows listing the names of files, but execute
+permission is required to access or traverse the directory. Without execute permission,
+the system blocks access to the directory contents, even if file permissions allow reading.
+
+Security Takeaway:
+Directory execute permission is critical for access control. Attackers may abuse this
+behavior to hide files, while defenders can use it to restrict traversal and protect
+sensitive data.
+
+Conclusion:
+This lab demonstrated that directory permissions control access more strictly than file
+permissions. Execute permission on directories is essential for entering and accessing
+files within them.
