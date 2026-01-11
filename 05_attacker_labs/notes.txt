@@ -1,0 +1,95 @@
+
+# Linux Permission Abuse – Lab 05 (Attacker Labs) Notes
+
+## Objective
+
+The purpose of this lab was to understand how **misconfigured file permissions and execution contexts** can be abused by attackers to achieve **privilege escalation** on Linux systems. Each scenario simulates a common real-world attack pattern.
+
+---
+
+## 1. Writable Root Script Abuse
+
+### Description
+
+In this scenario, a script owned and executed by `root` was configured with **world-write permissions**. This allowed a non-privileged user to modify the script’s contents.
+
+### Behavior Observed
+
+* The attacker was able to insert arbitrary commands into the script
+* When the script was executed as root, the injected commands also ran with root privileges
+
+### Security Impact
+
+Writable root-owned scripts are a **critical misconfiguration**. Any user who can modify such scripts can gain full system control when the script is executed.
+
+### Attacker Gain
+
+* Command execution as root
+* Full privilege escalation
+
+---
+
+## 2. PATH Hijacking
+
+### Description
+
+PATH hijacking occurs when a root-executed script relies on the `PATH` environment variable and executes commands **without absolute paths** (e.g. `ls` instead of `/bin/ls`).
+
+### Behavior Observed
+
+* Direct PATH hijacking via `sudo` did not work due to environment sanitization
+* A vulnerable root script that modified or trusted `PATH` allowed execution of a malicious binary placed earlier in the PATH
+
+### Security Impact
+
+If attackers can control a directory included in the PATH, they can replace trusted commands with malicious ones, resulting in code execution under elevated privileges.
+
+### Attacker Gain
+
+* Execution of attacker-controlled binaries
+* Persistence and privilege escalation
+
+---
+
+## 3. Cron Job Permission Abuse
+
+### Description
+
+Cron jobs often run as root and execute scripts automatically. If such scripts are writable by non-privileged users, they become an attack vector.
+
+### Behavior Observed
+
+* A cron-like script owned by root was made writable
+* The attacker modified the script to execute additional commands
+* When the script was executed as root, the injected code ran successfully
+
+### Security Impact
+
+Writable cron scripts allow attackers to gain:
+
+* Scheduled persistence
+* Silent privilege escalation
+
+This is one of the most common real-world Linux escalation techniques.
+
+### Attacker Gain
+
+* Root-level command execution
+* Long-term persistence via scheduled tasks
+
+---
+
+## Key Takeaways
+
+* Permission misconfigurations are a major source of Linux privilege escalation
+* Root-owned files must never be writable by untrusted users
+* Scripts executed by root must use **absolute paths**
+* Cron jobs require strict permission and ownership controls
+
+---
+
+## Conclusion
+
+This lab demonstrated practical privilege escalation techniques used by attackers by abusing Linux permission misconfigurations. Understanding these attack paths is essential for both penetration testing and defensive security operations.
+
+
