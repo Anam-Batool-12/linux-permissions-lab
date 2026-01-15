@@ -1,0 +1,76 @@
+Lab 06 – Defense and Hardening Notes
+Objective
+
+The goal of this lab was to implement defensive controls to prevent the permission abuse techniques demonstrated in Lab 05.
+
+1. Immutable Files with chattr
+
+The chattr +i command was used to make a file immutable.
+Once the immutable attribute is set:
+
+The file cannot be modified
+
+It cannot be deleted
+
+Even the root user cannot change it without removing the attribute
+
+This is useful for protecting:
+
+Critical configuration files
+
+Security logs
+
+Important scripts
+
+2. Securing Root-Owned Scripts
+
+Writable root scripts are a critical vulnerability.
+To prevent abuse:
+
+Root-owned scripts should have permissions like 700 or 750
+
+They must never be world-writable
+
+Ownership should always remain with root
+
+3. Preventing PATH Hijacking
+
+Privileged scripts should always use absolute paths for commands:
+
+Bad practice:
+
+ls
+
+
+Secure practice:
+
+/bin/ls
+
+
+Relying on PATH variables can allow attackers to execute malicious binaries.
+
+4. Cron Job Security
+
+Cron jobs must be carefully protected:
+
+Cron files should be writable only by root
+
+Scripts executed by cron should not be user-modifiable
+
+Permissions should be strictly controlled
+
+Key Takeaways
+
+Most Linux privilege escalation is caused by bad permissions
+
+Proper file ownership and restrictive permissions are the best defense
+
+Immutable attributes add an extra layer of protection
+
+Secure coding practices prevent exploitation
+
+Conclusion
+
+This lab demonstrated how to defend Linux systems against common permission-based attacks by applying practical hardening techniques.
+
+
